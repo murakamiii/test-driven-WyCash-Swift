@@ -21,7 +21,7 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         super.tearDown()
     }
     func testMultiplication() {
-        let five: Dollar = Dollar(amount: 5)
+        var five: Dollar = Dollar(amount: 5)
         five.times(multiplier: 2)
         XCTAssertEqual(10, five.amount)
     }

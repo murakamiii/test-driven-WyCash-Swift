@@ -10,9 +10,9 @@ import Foundation
 struct Dollar {
     var amount: Int
     init(amount: Int) {
-        self.amount = 10
+        self.amount = amount
     }
-    func times(multiplier: Int) {
-        
+    mutating func times(multiplier: Int) {
+        amount *= multiplier
     }
 }
