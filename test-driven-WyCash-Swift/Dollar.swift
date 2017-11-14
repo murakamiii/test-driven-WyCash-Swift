@@ -8,7 +8,7 @@
 
 import Foundation
 struct Dollar {
-    var amount: Int
+    private var amount: Int
     init(amount: Int) {
         self.amount = amount
     }
