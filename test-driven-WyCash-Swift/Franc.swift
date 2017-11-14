@@ -7,19 +7,13 @@
 //
 
 import Foundation
-struct Franc {
-    private var amount: Int
+struct Franc: Money {
+    private(set) var amount: Int
     init(amount: Int) {
         self.amount = amount
     }
     func times(multiplier: Int) -> Franc {
         return Franc(amount: amount * multiplier)
-    }
-}
-
-extension Franc: Equatable {
-    public static func == (lhs: Franc, rhs: Franc) -> Bool {
-        return lhs.amount == rhs.amount
     }
 }
 

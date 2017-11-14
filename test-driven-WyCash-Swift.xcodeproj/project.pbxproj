@@ -17,6 +17,8 @@
 		7B2314681FB8959800BFA288 /* Dollar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2314661FB892EA00BFA288 /* Dollar.swift */; };
 		7B23146A1FBB3AAB00BFA288 /* Franc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2314691FBB3AAB00BFA288 /* Franc.swift */; };
 		7B23146B1FBB3AED00BFA288 /* Franc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2314691FBB3AAB00BFA288 /* Franc.swift */; };
+		7B23146D1FBB3EFE00BFA288 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B23146C1FBB3EFE00BFA288 /* Money.swift */; };
+		7B23146E1FBB3F3500BFA288 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B23146C1FBB3EFE00BFA288 /* Money.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,7 @@
 		7B23145D1FB7023100BFA288 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7B2314661FB892EA00BFA288 /* Dollar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dollar.swift; sourceTree = "<group>"; };
 		7B2314691FBB3AAB00BFA288 /* Franc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Franc.swift; sourceTree = "<group>"; };
+		7B23146C1FBB3EFE00BFA288 /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,7 @@
 			children = (
 				7B2314461FB7023100BFA288 /* AppDelegate.swift */,
 				7B2314481FB7023100BFA288 /* ViewController.swift */,
+				7B23146C1FBB3EFE00BFA288 /* Money.swift */,
 				7B2314661FB892EA00BFA288 /* Dollar.swift */,
 				7B2314691FBB3AAB00BFA288 /* Franc.swift */,
 				7B23144A1FB7023100BFA288 /* Main.storyboard */,
@@ -208,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B23146A1FBB3AAB00BFA288 /* Franc.swift in Sources */,
+				7B23146D1FBB3EFE00BFA288 /* Money.swift in Sources */,
 				7B2314491FB7023100BFA288 /* ViewController.swift in Sources */,
 				7B2314671FB892EA00BFA288 /* Dollar.swift in Sources */,
 				7B2314471FB7023100BFA288 /* AppDelegate.swift in Sources */,
@@ -218,6 +223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B23146E1FBB3F3500BFA288 /* Money.swift in Sources */,
 				7B23146B1FBB3AED00BFA288 /* Franc.swift in Sources */,
 				7B2314681FB8959800BFA288 /* Dollar.swift in Sources */,
 				7B23145C1FB7023100BFA288 /* test_driven_WyCash_SwiftTests.swift in Sources */,
