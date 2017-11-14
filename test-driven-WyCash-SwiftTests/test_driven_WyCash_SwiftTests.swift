@@ -21,9 +21,13 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         super.tearDown()
     }
     func testMultiplication() {
-        var five: Dollar = Dollar(amount: 5)
-        five.times(multiplier: 2)
-        XCTAssertEqual(10, five.amount)
+        let five: Dollar = Dollar(amount: 5)
+        
+        var product = five.times(multiplier: 2)
+        XCTAssertEqual(10, product.amount)
+        
+        product = five.times(multiplier: 3)
+        XCTAssertEqual(15, product.amount)
     }
     func testExample() {
         // This is an example of a functional test case.
