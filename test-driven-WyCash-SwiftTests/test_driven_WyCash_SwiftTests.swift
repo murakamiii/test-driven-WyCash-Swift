@@ -20,7 +20,20 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+    func testMultiplication() {
+        let five: Dollar = Dollar(amount: 5)
+        
+        var product = five.times(multiplier: 2)
+        XCTAssertEqual(10, product.amount)
+        
+        product = five.times(multiplier: 3)
+        XCTAssertEqual(15, product.amount)
+    }
     
+    func testEquality() {
+        XCTAssertTrue(Dollar(amount: 5) == Dollar(amount: 5))
+        XCTAssertFalse(Dollar(amount: 5) == Dollar(amount: 6))
+    }
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
