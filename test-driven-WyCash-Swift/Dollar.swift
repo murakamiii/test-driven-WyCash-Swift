@@ -16,3 +16,9 @@ struct Dollar {
         return Dollar(amount: amount * multiplier)
     }
 }
+
+extension Dollar: Equatable {
+    public static func == (lhs: Dollar, rhs: Dollar) -> Bool {
+        return lhs.amount == rhs.amount
+    }
+}

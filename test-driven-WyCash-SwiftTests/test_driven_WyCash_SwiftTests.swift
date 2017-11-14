@@ -29,6 +29,11 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         product = five.times(multiplier: 3)
         XCTAssertEqual(15, product.amount)
     }
+    
+    func testEquality() {
+        XCTAssertTrue(Dollar(amount: 5) == Dollar(amount: 5))
+        XCTAssertFalse(Dollar(amount: 5) == Dollar(amount: 6))
+    }
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
