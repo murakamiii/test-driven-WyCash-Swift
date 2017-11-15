@@ -21,25 +21,28 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         super.tearDown()
     }
     func testMultiplication() {
-        let five: Dollar = Dollar(amount: 5)
+        let five: Dollar = MoneyStruct.dollar(amount: 5)
         
-        XCTAssertEqual(Dollar(amount: 10), five.times(multiplier: 2))
-        XCTAssertEqual(Dollar(amount: 15), five.times(multiplier: 3))
+        XCTAssertEqual(MoneyStruct.dollar(amount: 10), five.times(multiplier: 2))
+        XCTAssertEqual(MoneyStruct.dollar(amount: 15), five.times(multiplier: 3))
     }
     
     func testEquality() {
-        XCTAssertTrue(Dollar(amount: 5) == Dollar(amount: 5))
-        XCTAssertFalse(Dollar(amount: 5) == Dollar(amount: 6))
+        XCTAssertTrue(MoneyStruct.dollar(amount: 5) == MoneyStruct.dollar(amount: 5))
+        XCTAssertFalse(MoneyStruct.dollar(amount: 5) == MoneyStruct.dollar(amount: 6))
         
-        XCTAssertTrue(Franc(amount: 5) == Franc(amount: 5))
-        XCTAssertFalse(Franc(amount: 5) == Franc(amount: 6))
+        XCTAssertTrue(MoneyStruct.franc(amount: 5) == MoneyStruct.franc(amount: 5))
+        XCTAssertFalse(MoneyStruct.franc(amount: 5) == MoneyStruct.franc(amount: 6))
+        
+        // 比較できない
+//        XCTAssertFalse(MoneyStruct.franc(amount: 5) == MoneyStruct.dollar(amount: 5))
     }
     
     func testFrancMultiplication() {
-        let five: Franc = Franc(amount: 5)
+        let five: Franc = MoneyStruct.franc(amount: 5)
         
-        XCTAssertEqual(Franc(amount: 10), five.times(multiplier: 2))
-        XCTAssertEqual(Franc(amount: 15), five.times(multiplier: 3))
+        XCTAssertEqual(MoneyStruct.franc(amount: 10), five.times(multiplier: 2))
+        XCTAssertEqual(MoneyStruct.franc(amount: 15), five.times(multiplier: 3))
     }
     
     func testPerformanceExample() {

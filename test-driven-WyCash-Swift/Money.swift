@@ -17,3 +17,15 @@ extension Money {
     }
 }
 
+struct MoneyStruct: Money {
+    private(set) var amount: Int
+    
+    static func dollar(amount: Int) -> Dollar {
+        return Dollar(amount: amount)
+    }
+    
+    static func franc(amount: Int) -> Franc {
+        return Franc(amount: amount)
+    }
+}
+
