@@ -45,6 +45,10 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         XCTAssertEqual(MoneyStruct.franc(amount: 15), five.times(multiplier: 3))
     }
     
+    func testCurrency() {
+        XCTAssertEqual("USD", MoneyStruct.dollar(amount: 1).currency)
+        XCTAssertEqual("CHF", MoneyStruct.franc(amount: 1).currency)
+    }
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

@@ -9,10 +9,14 @@
 import Foundation
 struct Dollar: Money {
     private(set) var amount: Int
-    init(amount: Int) {
+    let currency: String
+    
+    init(amount: Int, currency: String) {
         self.amount = amount
+        self.currency = currency
     }
+    
     func times(multiplier: Int) -> Dollar {
-        return Dollar(amount: amount * multiplier)
+        return MoneyStruct.dollar(amount: amount * multiplier)
     }
 }

@@ -9,6 +9,7 @@
 import Foundation
 protocol Money: Equatable {
     var amount: Int {get}
+    var currency: String {get}
 }
 
 extension Money {
@@ -19,13 +20,13 @@ extension Money {
 
 struct MoneyStruct: Money {
     private(set) var amount: Int
-    
+    var currency: String
     static func dollar(amount: Int) -> Dollar {
-        return Dollar(amount: amount)
+        return Dollar(amount: amount, currency: "USD")
     }
     
     static func franc(amount: Int) -> Franc {
-        return Franc(amount: amount)
+        return Franc(amount: amount, currency: "CHF")
     }
 }
 

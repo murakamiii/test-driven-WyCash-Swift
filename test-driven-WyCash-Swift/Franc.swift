@@ -9,11 +9,15 @@
 import Foundation
 struct Franc: Money {
     private(set) var amount: Int
-    init(amount: Int) {
+    let currency: String
+
+    init(amount: Int, currency: String) {
         self.amount = amount
+        self.currency = currency
     }
+    
     func times(multiplier: Int) -> Franc {
-        return Franc(amount: amount * multiplier)
+        return MoneyStruct.franc(amount: amount * multiplier)
     }
 }
 
