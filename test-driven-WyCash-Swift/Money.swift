@@ -21,12 +21,22 @@ extension Money {
 struct MoneyStruct: Money {
     private(set) var amount: Int
     var currency: String
-    static func dollar(amount: Int) -> Dollar {
-        return Dollar(amount: amount, currency: "USD")
+    
+    init(amount: Int, currency: String) {
+        self.amount = amount
+        self.currency = currency
     }
     
-    static func franc(amount: Int) -> Franc {
-        return Franc(amount: amount, currency: "CHF")
+    func times(multiplier: Int) -> MoneyStruct {
+        return MoneyStruct.init(amount: amount * multiplier, currency: currency)
+    }
+    
+    static func dollar(amount: Int) -> MoneyStruct {
+        return MoneyStruct.init(amount: amount, currency: "USD")
+    }
+    
+    static func franc(amount: Int) -> MoneyStruct {
+        return MoneyStruct.init(amount: amount, currency: "CHF")
     }
 }
 

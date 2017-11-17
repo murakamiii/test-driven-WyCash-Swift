@@ -16,8 +16,8 @@ struct Franc: Money {
         self.currency = currency
     }
     
-    func times(multiplier: Int) -> Franc {
-        return MoneyStruct.franc(amount: amount * multiplier)
+    func times(multiplier: Int) -> MoneyStruct {
+        return MoneyStruct.init(amount: amount * multiplier, currency: currency)
     }
 }
 

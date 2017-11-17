@@ -16,7 +16,7 @@ struct Dollar: Money {
         self.currency = currency
     }
     
-    func times(multiplier: Int) -> Dollar {
-        return MoneyStruct.dollar(amount: amount * multiplier)
+    func times(multiplier: Int) -> MoneyStruct {
+        return MoneyStruct.init(amount: amount * multiplier, currency: currency)
     }
 }

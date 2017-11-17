@@ -21,7 +21,7 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         super.tearDown()
     }
     func testMultiplication() {
-        let five: Dollar = MoneyStruct.dollar(amount: 5)
+        let five: MoneyStruct = MoneyStruct.dollar(amount: 5)
         
         XCTAssertEqual(MoneyStruct.dollar(amount: 10), five.times(multiplier: 2))
         XCTAssertEqual(MoneyStruct.dollar(amount: 15), five.times(multiplier: 3))
@@ -39,7 +39,7 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
     }
     
     func testFrancMultiplication() {
-        let five: Franc = MoneyStruct.franc(amount: 5)
+        let five: MoneyStruct = MoneyStruct.franc(amount: 5)
         
         XCTAssertEqual(MoneyStruct.franc(amount: 10), five.times(multiplier: 2))
         XCTAssertEqual(MoneyStruct.franc(amount: 15), five.times(multiplier: 3))
