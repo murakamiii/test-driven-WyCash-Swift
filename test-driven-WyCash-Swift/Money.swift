@@ -14,7 +14,7 @@ protocol Money: Equatable {
 
 extension Money {
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.amount == rhs.amount
+        return lhs.amount == rhs.amount && lhs.currency == rhs.currency
     }
 }
 

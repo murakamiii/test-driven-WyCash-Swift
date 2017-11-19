@@ -20,6 +20,7 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+    
     func testMultiplication() {
         let five: MoneyStruct = MoneyStruct.dollar(amount: 5)
         
@@ -30,30 +31,11 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
     func testEquality() {
         XCTAssertTrue(MoneyStruct.dollar(amount: 5) == MoneyStruct.dollar(amount: 5))
         XCTAssertFalse(MoneyStruct.dollar(amount: 5) == MoneyStruct.dollar(amount: 6))
-        
-        XCTAssertTrue(MoneyStruct.franc(amount: 5) == MoneyStruct.franc(amount: 5))
-        XCTAssertFalse(MoneyStruct.franc(amount: 5) == MoneyStruct.franc(amount: 6))
-        
-        // 比較できない
-//        XCTAssertFalse(MoneyStruct.franc(amount: 5) == MoneyStruct.dollar(amount: 5))
+        XCTAssertFalse(MoneyStruct.franc(amount: 5) == MoneyStruct.dollar(amount: 5))
     }
-    
-    func testFrancMultiplication() {
-        let five: MoneyStruct = MoneyStruct.franc(amount: 5)
-        
-        XCTAssertEqual(MoneyStruct.franc(amount: 10), five.times(multiplier: 2))
-        XCTAssertEqual(MoneyStruct.franc(amount: 15), five.times(multiplier: 3))
-    }
-    
+
     func testCurrency() {
         XCTAssertEqual("USD", MoneyStruct.dollar(amount: 1).currency)
         XCTAssertEqual("CHF", MoneyStruct.franc(amount: 1).currency)
     }
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
 }
