@@ -38,4 +38,10 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         XCTAssertEqual("USD", MoneyStruct.dollar(amount: 1).currency)
         XCTAssertEqual("CHF", MoneyStruct.franc(amount: 1).currency)
     }
+    func testSimpleAddition() {
+        let sum: Expression = MoneyStruct.dollar(amount: 5) + MoneyStruct.dollar(amount: 5)
+        let bank: Bank = Bank()
+        let summarized: MoneyStruct = bank.summarized(sum, currency: "USD")
+        XCTAssertEqual(MoneyStruct.dollar(amount: 10), summarized)
+    }
 }
