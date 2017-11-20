@@ -8,6 +8,7 @@
 
 import Foundation
 protocol Expression {
+    func summarized(currency: String) -> MoneyStruct
 }
 
 protocol Money: Equatable, Expression {
@@ -19,10 +20,6 @@ protocol Money: Equatable, Expression {
 extension Money {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.amount == rhs.amount && lhs.currency == rhs.currency
-    }
-    
-    public static func + (lhs: Self, rhs: Self) -> Expression {
-        return Self.init(amount:lhs.amount + rhs.amount ,currency: lhs.currency)
     }
 }
 
@@ -39,6 +36,10 @@ struct MoneyStruct: Money {
         return MoneyStruct.init(amount: amount * multiplier, currency: currency)
     }
     
+    func summarized(currency: String) -> MoneyStruct {
+        return self
+    }
+    
     static func dollar(amount: Int) -> MoneyStruct {
         return MoneyStruct.init(amount: amount, currency: "USD")
     }
@@ -48,8 +49,24 @@ struct MoneyStruct: Money {
     }
 }
 
+extension MoneyStruct {
+    public static func + (lhs: MoneyStruct, rhs: MoneyStruct) -> Sum {
+        return Sum.init(augend: lhs, addend: rhs)
+    }
+}
+
+struct Sum: Expression {
+    var augend: MoneyStruct
+    var addend: MoneyStruct
+    
+    func summarized(currency: String) -> MoneyStruct {
+        let amount: Int = augend.amount + addend.amount
+        return MoneyStruct.init(amount: amount, currency: currency)
+    }
+}
+
 class Bank {
     func summarized(_ source: Expression, currency: String) -> MoneyStruct {
-        return MoneyStruct.dollar(amount: 10)
+        return source.summarized(currency: currency)
     }
 }
