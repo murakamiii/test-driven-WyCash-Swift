@@ -8,7 +8,7 @@
 
 import Foundation
 protocol Expression {
-    func summarized(currency: String) -> MoneyStruct
+    func summarized(bank: Bank, currencyTo: String) -> MoneyStruct
 }
 
 protocol Money: Equatable, Expression {
@@ -36,8 +36,9 @@ struct MoneyStruct: Money {
         return MoneyStruct.init(amount: amount * multiplier, currency: currency)
     }
     
-    func summarized(currency: String) -> MoneyStruct {
-        return self
+    func summarized(bank: Bank, currencyTo: String) -> MoneyStruct {
+        let rate: Int = bank.getRate(from: currency, to: currencyTo)
+        return MoneyStruct.init(amount: self.amount / rate, currency: currencyTo)
     }
     
     static func dollar(amount: Int) -> MoneyStruct {
@@ -59,14 +60,42 @@ struct Sum: Expression {
     var augend: MoneyStruct
     var addend: MoneyStruct
     
-    func summarized(currency: String) -> MoneyStruct {
+    func summarized(bank: Bank, currencyTo: String) -> MoneyStruct {
         let amount: Int = augend.amount + addend.amount
-        return MoneyStruct.init(amount: amount, currency: currency)
+        return MoneyStruct.init(amount: amount, currency: currencyTo)
     }
 }
 
 class Bank {
+    private(set) var rates: [Pair: Int]
+    init() {
+        self.rates = [:]
+    }
     func summarized(_ source: Expression, currency: String) -> MoneyStruct {
-        return source.summarized(currency: currency)
+        return source.summarized(bank: self, currencyTo: currency)
+    }
+    func addRate(from: String, to: String, rate: Int) {
+        rates[Pair.init(from: from, to: to)] = rate
+    }
+    func getRate(from: String, to: String) -> Int {
+        if from == to {
+            return 1
+        }
+        return rates[Pair.init(from: from, to: to)]!
+    }
+}
+
+struct Pair {
+    private(set) var from: String
+    private(set) var to: String
+}
+
+extension Pair: Hashable {
+    var hashValue: Int {
+        return 0
+    }
+    
+    public static func == (lhs: Pair, rhs: Pair) -> Bool {
+        return lhs.from == rhs.from && lhs.to == rhs.to
     }
 }

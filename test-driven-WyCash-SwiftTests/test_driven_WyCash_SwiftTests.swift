@@ -61,4 +61,13 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         let result: MoneyStruct = bank.summarized(MoneyStruct.dollar(amount: 1), currency: "USD")
         XCTAssertEqual(MoneyStruct.dollar(amount: 1), result)
     }
+    func testSummarizeMoneyDifferentCurrency() {
+        let bank = Bank()
+        bank.addRate(from: "CHF", to: "USD", rate: 2)
+        let result = bank.summarized(MoneyStruct.franc(amount: 2), currency: "USD")
+        XCTAssertEqual(MoneyStruct.dollar(amount: 1), result)
+    }
+    func testIdentityRate() {
+        XCTAssertEqual(1, Bank.init().getRate(from: "USD", to: "USD"))
+    }
 }
