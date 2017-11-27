@@ -61,7 +61,7 @@ struct Sum: Expression {
     var addend: MoneyStruct
     
     func summarized(bank: Bank, currencyTo: String) -> MoneyStruct {
-        let amount: Int = augend.amount + addend.amount
+        let amount: Int = augend.summarized(bank: bank, currencyTo: currencyTo).amount + addend.summarized(bank: bank, currencyTo: currencyTo).amount
         return MoneyStruct.init(amount: amount, currency: currencyTo)
     }
 }

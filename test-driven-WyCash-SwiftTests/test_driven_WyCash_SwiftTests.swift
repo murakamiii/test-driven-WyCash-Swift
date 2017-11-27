@@ -70,4 +70,13 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
     func testIdentityRate() {
         XCTAssertEqual(1, Bank.init().getRate(from: "USD", to: "USD"))
     }
+    
+    func testMixedAddition() {
+        let fiveBucks: MoneyStruct = MoneyStruct.dollar(amount: 5)
+        let tenFrancs: MoneyStruct = MoneyStruct.franc(amount: 10)
+        let bank: Bank = Bank()
+        bank.addRate(from: "CHF", to: "USD", rate: 2)
+        let result: MoneyStruct = bank.summarized(fiveBucks + tenFrancs, currency: "USD")
+        XCTAssertEqual(MoneyStruct.dollar(amount: 10), result)
+    }
 }
