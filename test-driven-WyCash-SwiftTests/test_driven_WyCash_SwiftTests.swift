@@ -22,61 +22,61 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
     }
     
     func testMultiplication() {
-        let five: MoneyStruct = MoneyStruct.dollar(amount: 5)
+        let five: Money = Money.dollar(amount: 5)
         
-        XCTAssertEqual(MoneyStruct.dollar(amount: 10), five.times(multiplier: 2))
-        XCTAssertEqual(MoneyStruct.dollar(amount: 15), five.times(multiplier: 3))
+        XCTAssertEqual(Money.dollar(amount: 10), five.times(multiplier: 2))
+        XCTAssertEqual(Money.dollar(amount: 15), five.times(multiplier: 3))
     }
     
     func testEquality() {
-        XCTAssertTrue(MoneyStruct.dollar(amount: 5) == MoneyStruct.dollar(amount: 5))
-        XCTAssertFalse(MoneyStruct.dollar(amount: 5) == MoneyStruct.dollar(amount: 6))
-        XCTAssertFalse(MoneyStruct.franc(amount: 5) == MoneyStruct.dollar(amount: 5))
+        XCTAssertTrue(Money.dollar(amount: 5) == Money.dollar(amount: 5))
+        XCTAssertFalse(Money.dollar(amount: 5) == Money.dollar(amount: 6))
+        XCTAssertFalse(Money.franc(amount: 5) == Money.dollar(amount: 5))
     }
 
     func testCurrency() {
-        XCTAssertEqual("USD", MoneyStruct.dollar(amount: 1).currency)
-        XCTAssertEqual("CHF", MoneyStruct.franc(amount: 1).currency)
+        XCTAssertEqual("USD", Money.dollar(amount: 1).currency)
+        XCTAssertEqual("CHF", Money.franc(amount: 1).currency)
     }
     func testSimpleAddition() {
-        let sum: Sum = MoneyStruct.dollar(amount: 5) + MoneyStruct.dollar(amount: 5)
+        let sum: Sum = Money.dollar(amount: 5) + Money.dollar(amount: 5)
         let bank: Bank = Bank()
-        let summarized: MoneyStruct = bank.summarized(sum, currency: "USD")
-        XCTAssertEqual(MoneyStruct.dollar(amount: 10), summarized)
+        let summarized: Money = bank.summarized(sum, currency: "USD")
+        XCTAssertEqual(Money.dollar(amount: 10), summarized)
     }
     func testPlusReturnsSum() {
-        let five = MoneyStruct.dollar(amount: 5)
+        let five = Money.dollar(amount: 5)
         let sum: Sum = five + five
         XCTAssertEqual(five, sum.augend)
         XCTAssertEqual(five, sum.addend)
     }
     func testSummarizeSum() {
-        let sum: Expression = Sum.init(augend: MoneyStruct.dollar(amount: 3), addend: MoneyStruct.dollar(amount: 4))
+        let sum: Expression = Sum.init(augend: Money.dollar(amount: 3), addend: Money.dollar(amount: 4))
         let bank: Bank = Bank()
-        let result: MoneyStruct = bank.summarized(sum, currency: "USD")
-        XCTAssertEqual(MoneyStruct.dollar(amount: 7), result)
+        let result: Money = bank.summarized(sum, currency: "USD")
+        XCTAssertEqual(Money.dollar(amount: 7), result)
     }
     func testSummarizeMoney() {
         let bank = Bank()
-        let result: MoneyStruct = bank.summarized(MoneyStruct.dollar(amount: 1), currency: "USD")
-        XCTAssertEqual(MoneyStruct.dollar(amount: 1), result)
+        let result: Money = bank.summarized(Money.dollar(amount: 1), currency: "USD")
+        XCTAssertEqual(Money.dollar(amount: 1), result)
     }
     func testSummarizeMoneyDifferentCurrency() {
         let bank = Bank()
         bank.addRate(from: "CHF", to: "USD", rate: 2)
-        let result = bank.summarized(MoneyStruct.franc(amount: 2), currency: "USD")
-        XCTAssertEqual(MoneyStruct.dollar(amount: 1), result)
+        let result = bank.summarized(Money.franc(amount: 2), currency: "USD")
+        XCTAssertEqual(Money.dollar(amount: 1), result)
     }
     func testIdentityRate() {
         XCTAssertEqual(1, Bank.init().getRate(from: "USD", to: "USD"))
     }
     
     func testMixedAddition() {
-        let fiveBucks: MoneyStruct = MoneyStruct.dollar(amount: 5)
-        let tenFrancs: MoneyStruct = MoneyStruct.franc(amount: 10)
+        let fiveBucks: Money = Money.dollar(amount: 5)
+        let tenFrancs: Money = Money.franc(amount: 10)
         let bank: Bank = Bank()
         bank.addRate(from: "CHF", to: "USD", rate: 2)
-        let result: MoneyStruct = bank.summarized(fiveBucks + tenFrancs, currency: "USD")
-        XCTAssertEqual(MoneyStruct.dollar(amount: 10), result)
+        let result: Money = bank.summarized(fiveBucks + tenFrancs, currency: "USD")
+        XCTAssertEqual(Money.dollar(amount: 10), result)
     }
 }
