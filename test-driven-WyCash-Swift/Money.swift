@@ -8,61 +8,86 @@
 
 import Foundation
 protocol Expression {
-    func summarized(bank: Bank, currencyTo: String) -> MoneyStruct
+    func summarized(bank: Bank, currencyTo: String) -> Money
+    var amount: Int { get }
+    var currency: String { get }
 }
 
-protocol Money: Equatable, Expression {
-    var amount: Int {get}
-    var currency: String {get}
-    init(amount: Int, currency: String)
-}
+struct AnyExpression: Expression, Equatable {
+    private let expression: Expression
+    var amount: Int {
+        get {
+            return self.expression.amount
+        }
+    }
+    var currency: String {
+        get {
+            return self.expression.currency
+        }
+    }
 
-extension Money {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.amount == rhs.amount && lhs.currency == rhs.currency
+    func summarized(bank: Bank, currencyTo: String) -> Money {
+        return self.expression.summarized(bank: bank, currencyTo: currencyTo)
+    }
+    
+    init(_ expression: Expression) {
+        self.expression = expression
+    }
+    
+    static func ==(lhs: AnyExpression, rhs: AnyExpression) -> Bool {
+       return lhs.amount == rhs.amount && lhs.currency == rhs.currency
     }
 }
 
-struct MoneyStruct: Money {
+struct Money: Expression {
     private(set) var amount: Int
     var currency: String
+    var equatable: AnyExpression {
+        return AnyExpression.init(self)
+    }
     
     init(amount: Int, currency: String) {
         self.amount = amount
         self.currency = currency
     }
     
-    func times(multiplier: Int) -> MoneyStruct {
-        return MoneyStruct.init(amount: amount * multiplier, currency: currency)
+    func times(multiplier: Int) -> Money {
+        return Money.init(amount: amount * multiplier, currency: currency)
     }
     
-    func summarized(bank: Bank, currencyTo: String) -> MoneyStruct {
+    func summarized(bank: Bank, currencyTo: String) -> Money {
         let rate: Int = bank.getRate(from: currency, to: currencyTo)
-        return MoneyStruct.init(amount: self.amount / rate, currency: currencyTo)
+        return Money.init(amount: self.amount / rate, currency: currencyTo)
     }
     
-    static func dollar(amount: Int) -> MoneyStruct {
-        return MoneyStruct.init(amount: amount, currency: "USD")
+    static func dollar(amount: Int) -> Money {
+        return Money.init(amount: amount, currency: "USD")
     }
     
-    static func franc(amount: Int) -> MoneyStruct {
-        return MoneyStruct.init(amount: amount, currency: "CHF")
+    static func franc(amount: Int) -> Money {
+        return Money.init(amount: amount, currency: "CHF")
     }
-}
-
-extension MoneyStruct {
-    public static func + (lhs: MoneyStruct, rhs: MoneyStruct) -> Sum {
+    
+    public static func + (lhs: Money, rhs: Money) -> Sum {
         return Sum.init(augend: lhs, addend: rhs)
     }
 }
 
 struct Sum: Expression {
-    var augend: MoneyStruct
-    var addend: MoneyStruct
+    var amount: Int {
+        return 0
+    }
     
-    func summarized(bank: Bank, currencyTo: String) -> MoneyStruct {
-        let amount: Int = augend.amount + addend.amount
-        return MoneyStruct.init(amount: amount, currency: currencyTo)
+    var currency: String {
+        return ""
+    }
+    
+    var augend: Money
+    var addend: Money
+    
+    func summarized(bank: Bank, currencyTo: String) -> Money {
+        let amount: Int = augend.summarized(bank: bank, currencyTo: currencyTo).amount + addend.summarized(bank: bank, currencyTo: currencyTo).amount
+        return Money.init(amount: amount, currency: currencyTo)
     }
 }
 
@@ -71,7 +96,7 @@ class Bank {
     init() {
         self.rates = [:]
     }
-    func summarized(_ source: Expression, currency: String) -> MoneyStruct {
+    func summarized(_ source: Expression, currency: String) -> Money {
         return source.summarized(bank: self, currencyTo: currency)
     }
     func addRate(from: String, to: String, rate: Int) {
