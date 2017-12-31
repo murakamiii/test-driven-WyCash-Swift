@@ -9,11 +9,42 @@
 import Foundation
 protocol Expression {
     func summarized(bank: Bank, currencyTo: String) -> Money
+    var amount: Int { get }
+    var currency: String { get }
 }
 
-struct Money: Equatable, Expression {
+struct AnyExpression: Expression, Equatable {
+    private let expression: Expression
+    var amount: Int {
+        get {
+            return self.expression.amount
+        }
+    }
+    var currency: String {
+        get {
+            return self.expression.currency
+        }
+    }
+
+    func summarized(bank: Bank, currencyTo: String) -> Money {
+        return self.expression.summarized(bank: bank, currencyTo: currencyTo)
+    }
+    
+    init(_ expression: Expression) {
+        self.expression = expression
+    }
+    
+    static func ==(lhs: AnyExpression, rhs: AnyExpression) -> Bool {
+       return lhs.amount == rhs.amount && lhs.currency == rhs.currency
+    }
+}
+
+struct Money: Expression {
     private(set) var amount: Int
     var currency: String
+    var equatable: AnyExpression {
+        return AnyExpression.init(self)
+    }
     
     init(amount: Int, currency: String) {
         self.amount = amount
@@ -36,12 +67,6 @@ struct Money: Equatable, Expression {
     static func franc(amount: Int) -> Money {
         return Money.init(amount: amount, currency: "CHF")
     }
-}
-
-extension Money {
-    public static func == (lhs: Money, rhs: Money) -> Bool {
-        return lhs.amount == rhs.amount && lhs.currency == rhs.currency
-    }
     
     public static func + (lhs: Money, rhs: Money) -> Sum {
         return Sum.init(augend: lhs, addend: rhs)
@@ -49,6 +74,14 @@ extension Money {
 }
 
 struct Sum: Expression {
+    var amount: Int {
+        return 0
+    }
+    
+    var currency: String {
+        return ""
+    }
+    
     var augend: Money
     var addend: Money
     
