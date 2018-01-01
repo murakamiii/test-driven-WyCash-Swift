@@ -47,11 +47,11 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
     func testPlusReturnsSum() {
         let five = Money.dollar(amount: 5)
         let sum: Sum = five + five
-        XCTAssertEqual(five.equatable, sum.augend.equatable)
-        XCTAssertEqual(five.equatable, sum.addend.equatable)
+        XCTAssertEqual(five.equatable, sum.augend)
+        XCTAssertEqual(five.equatable, sum.addend)
     }
     func testSummarizeSum() {
-        let sum: Expression = Sum.init(augend: Money.dollar(amount: 3), addend: Money.dollar(amount: 4))
+        let sum: Expression = Sum(augend: Money.dollar(amount: 3).equatable, addend: Money.dollar(amount: 4).equatable)
         let bank: Bank = Bank()
         let result: Money = bank.summarized(sum, currency: "USD")
         XCTAssertEqual(Money.dollar(amount: 7).equatable, result.equatable)
@@ -72,8 +72,8 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
     }
     
     func testMixedAddition() {
-        let fiveBucks: Money = Money.dollar(amount: 5)
-        let tenFrancs: Money = Money.franc(amount: 10)
+        let fiveBucks: AnyExpression = Money.dollar(amount: 5).equatable
+        let tenFrancs: AnyExpression = Money.franc(amount: 10).equatable
         let bank: Bank = Bank()
         bank.addRate(from: "CHF", to: "USD", rate: 2)
         let result: Money = bank.summarized(fiveBucks + tenFrancs, currency: "USD")

@@ -11,6 +11,7 @@ protocol Expression {
     func summarized(bank: Bank, currencyTo: String) -> Money
     var amount: Int { get }
     var currency: String { get }
+    var equatable: AnyExpression { get }
 }
 
 struct AnyExpression: Expression, Equatable {
@@ -25,7 +26,11 @@ struct AnyExpression: Expression, Equatable {
             return self.expression.currency
         }
     }
-
+    
+    var equatable: AnyExpression {
+        return self
+    }
+    
     func summarized(bank: Bank, currencyTo: String) -> Money {
         return self.expression.summarized(bank: bank, currencyTo: currencyTo)
     }
@@ -36,6 +41,10 @@ struct AnyExpression: Expression, Equatable {
     
     static func ==(lhs: AnyExpression, rhs: AnyExpression) -> Bool {
        return lhs.amount == rhs.amount && lhs.currency == rhs.currency
+    }
+    
+    public static func + (lhs: AnyExpression, rhs: AnyExpression) -> Sum {
+        return Sum.init(augend: lhs, addend: rhs)
     }
 }
 
@@ -51,7 +60,7 @@ struct Money: Expression {
         self.currency = currency
     }
     
-    func times(multiplier: Int) -> Money {
+    func times(multiplier: Int) -> Expression {
         return Money.init(amount: amount * multiplier, currency: currency)
     }
     
@@ -69,11 +78,15 @@ struct Money: Expression {
     }
     
     public static func + (lhs: Money, rhs: Money) -> Sum {
-        return Sum.init(augend: lhs, addend: rhs)
+        return Sum.init(augend: AnyExpression(lhs), addend: AnyExpression(rhs))
     }
 }
 
 struct Sum: Expression {
+    var equatable: AnyExpression {
+        return AnyExpression(self)
+    }
+    
     var amount: Int {
         return 0
     }
@@ -82,8 +95,8 @@ struct Sum: Expression {
         return ""
     }
     
-    var augend: Money
-    var addend: Money
+    var augend: AnyExpression
+    var addend: AnyExpression
     
     func summarized(bank: Bank, currencyTo: String) -> Money {
         let amount: Int = augend.summarized(bank: bank, currencyTo: currencyTo).amount + addend.summarized(bank: bank, currencyTo: currencyTo).amount
