@@ -17,14 +17,10 @@ protocol Expression {
 struct AnyExpression: Expression, Equatable {
     private let expression: Expression
     var amount: Int {
-        get {
-            return self.expression.amount
-        }
+        return self.expression.amount
     }
     var currency: String {
-        get {
-            return self.expression.currency
-        }
+        return self.expression.currency
     }
     
     var equatable: AnyExpression {
@@ -45,6 +41,10 @@ struct AnyExpression: Expression, Equatable {
     
     public static func + (lhs: AnyExpression, rhs: AnyExpression) -> Sum {
         return Sum.init(augend: lhs, addend: rhs)
+    }
+    
+    func times(multiplier: Int) -> Expression {
+        return Money.init(amount: amount * multiplier, currency: currency)
     }
 }
 
@@ -102,6 +102,14 @@ struct Sum: Expression {
         let amount: Int = augend.summarized(bank: bank, currencyTo: currencyTo).amount + addend.summarized(bank: bank, currencyTo: currencyTo).amount
         return Money.init(amount: amount, currency: currencyTo)
     }
+    
+    public static func + (lhs: Sum, rhs: AnyExpression) -> Sum {
+        return Sum.init(augend: lhs.equatable, addend: rhs)
+    }
+    
+    func times(multiplier: Int) -> Expression {
+        return Sum.init(augend: augend.times(multiplier: multiplier).equatable, addend: addend.times(multiplier: multiplier).equatable)
+    }
 }
 
 class Bank {
@@ -121,6 +129,7 @@ class Bank {
         }
         return rates[Pair.init(from: from, to: to)]!
     }
+    
 }
 
 struct Pair {
