@@ -79,4 +79,24 @@ class test_driven_WyCash_SwiftTests: XCTestCase {
         let result: Money = bank.summarized(fiveBucks + tenFrancs, currency: "USD")
         XCTAssertEqual(Money.dollar(amount: 10).equatable, result.equatable)
     }
+    
+    func testSumPlusmoney() {
+        let fiveBucks: AnyExpression = Money.dollar(amount: 5).equatable
+        let tenFrancs: AnyExpression = Money.franc(amount: 10).equatable
+        let bank: Bank = Bank()
+        bank.addRate(from: "CHF", to: "USD", rate: 2)
+        let sum: Expression = Sum(augend: fiveBucks, addend: tenFrancs) + fiveBucks
+        let result: Money = bank.summarized(sum, currency: "USD")
+        XCTAssertEqual(Money.dollar(amount: 15).equatable, result.equatable)
+    }
+    
+    func testSumTimes() {
+        let fiveBucks: AnyExpression = Money.dollar(amount: 5).equatable
+        let tenFrancs: AnyExpression = Money.franc(amount: 10).equatable
+        let bank: Bank = Bank()
+        bank.addRate(from: "CHF", to: "USD", rate: 2)
+        let sum: Expression = Sum(augend: fiveBucks, addend: tenFrancs).times(multiplier: 2)
+        let result: Money = bank.summarized(sum, currency: "USD")
+        XCTAssertEqual(Money.dollar(amount: 20).equatable, result.equatable)
+    }
 }
